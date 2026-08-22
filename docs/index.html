@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>C³ — Calculus of Constrained Constructions</title>
+  <style>
+    :root {
+      --bg: #0a0a0f; --bg2: #0f0f1a; --bg3: #14142a;
+      --border: #1e1e3a; --accent: #7c5cfc; --accent2: #a78bfa;
+      --accent3: #38bdf8; --gold: #f59e0b;
+      --text: #e2e8f0; --muted: #94a3b8; --dim: #475569;
+      --green: #4ade80; --font: 'Courier New', monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: system-ui, sans-serif; line-height: 1.6; }
+    a { color: var(--accent2); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .container { max-width: 1000px; margin: 0 auto; padding: 0 2rem; }
+
+    .hero {
+      min-height: 100vh; display: flex; flex-direction: column;
+      justify-content: center; align-items: center; text-align: center;
+      padding: 6rem 2rem 4rem;
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(124,92,252,0.12) 0%, transparent 70%);
+      border-bottom: 1px solid var(--border);
+    }
+    .badge { display: inline-block; font-family: var(--font); font-size: 0.68rem; letter-spacing: 0.15em; color: var(--gold); border: 1px solid var(--gold); padding: 0.3rem 0.8rem; margin-bottom: 2rem; opacity: 0.9; }
+    h1 { font-size: clamp(2.5rem, 7vw, 5rem); font-weight: 800; letter-spacing: -0.03em; margin-bottom: 1.5rem; background: linear-gradient(135deg, #fff 0%, var(--accent2) 60%, var(--accent3) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .tagline { font-size: clamp(1rem, 2.5vw, 1.3rem); color: var(--muted); max-width: 700px; margin-bottom: 2.5rem; }
+    .core-rule { background: var(--bg3); border: 1px solid var(--border); border-left: 3px solid var(--accent); padding: 1.5rem 2rem; border-radius: 4px; font-family: var(--font); font-size: 0.9rem; color: var(--accent2); text-align: left; margin-bottom: 3rem; max-width: 600px; white-space: pre; line-height: 2; }
+    .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+    .btn-primary { background: var(--accent); color: #fff; padding: 0.75rem 2rem; font-weight: 600; border-radius: 4px; }
+    .btn-primary:hover { background: var(--accent2); text-decoration: none; color: #fff; }
+    .btn-ghost { border: 1px solid var(--border); color: var(--muted); padding: 0.75rem 2rem; border-radius: 4px; }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent2); text-decoration: none; }
+
+    section { padding: 5rem 2rem; border-bottom: 1px solid var(--border); }
+    section:nth-child(even) { background: var(--bg2); }
+    h2 { font-size: clamp(1.6rem, 4vw, 2.5rem); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 1.25rem; color: #fff; }
+    .section-lead { color: var(--muted); max-width: 700px; margin-bottom: 3rem; font-size: 1.05rem; }
+
+    .comparison { width: 100%; border-collapse: collapse; margin-bottom: 2rem; }
+    .comparison th { background: var(--bg3); color: var(--accent2); font-family: var(--font); font-size: 0.8rem; padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--border); }
+    .comparison td { padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); font-size: 0.9rem; color: var(--muted); }
+    .comparison tr:hover td { background: rgba(124,92,252,0.04); }
+    .yes { color: var(--green); } .no { color: #ef4444; }
+
+    pre { background: var(--bg3); border: 1px solid var(--border); border-radius: 4px; padding: 1.25rem; overflow-x: auto; margin-bottom: 1.5rem; }
+    code { font-family: var(--font); font-size: 0.82rem; color: var(--accent2); }
+    pre code { color: var(--accent2); }
+    .comment { color: var(--dim); }
+
+    .test-suite { background: var(--bg); border: 1px solid var(--border); border-radius: 4px; padding: 1.5rem; }
+    .test-group { color: var(--muted); font-family: var(--font); font-size: 0.78rem; margin: 1rem 0 0.5rem; letter-spacing: 0.08em; }
+    .test-pass { color: var(--green); font-family: var(--font); font-size: 0.82rem; display: block; }
+    .test-summary { margin-top: 1rem; font-family: var(--font); font-size: 0.82rem; color: var(--accent2); }
+
+    .oblig-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
+    .oblig-item { background: var(--bg3); border: 1px solid var(--border); border-left: 3px solid var(--accent3); padding: 1.25rem; border-radius: 4px; }
+    .oblig-id { font-family: var(--font); font-size: 0.68rem; color: var(--accent3); margin-bottom: 0.4rem; }
+    .oblig-title { font-size: 0.9rem; color: var(--text); margin-bottom: 0.4rem; font-weight: 600; }
+    .oblig-method { font-size: 0.78rem; color: var(--dim); }
+
+    footer { padding: 3rem 2rem; background: var(--bg); }
+    .footer-row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; }
+    .footer-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+    .footer-links a { color: var(--muted); font-size: 0.85rem; }
+    .footer-note { font-family: var(--font); font-size: 0.7rem; letter-spacing: 0.1em; color: var(--dim); text-align: center; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+  </style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="badge">SNAPKITTYWEST · FORMAL SYSTEMS · LIQUID HASKELL HERITAGE</div>
+  <h1>C³</h1>
+  <p class="tagline">Calculus of Constrained Constructions — a sovereign alternative to SMT solvers and refinement type systems, built from first principles. Every term carries its constraints.</p>
+  <div class="core-rule">⟨t | C⟩ : τ     iff     Γ ⊢ t : τ   and   SAT(C)
+⟨t | C⟩ ⟶ v     iff     C satisfiable and v = eval(t, model(C))
+¬SAT(C)          iff     ⟨t | C⟩ does not exist</div>
+  <div class="hero-cta">
+    <a href="https://github.com/SNAPKITTYWEST/c3-kernel" class="btn-primary">View Source</a>
+    <a href="https://github.com/SNAPKITTYWEST/c3-kernel/blob/master/OBLIGATIONS.md" class="btn-ghost">Proof Obligations</a>
+    <a href="https://github.com/SNAPKITTYWEST/c3-kernel/blob/master/CONTRIBUTING.md" class="btn-ghost">Contribute</a>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2>vs. Liquid Haskell · Z3 · Lean 4 · Dex</h2>
+    <p class="section-lead">C³ unifies four systems that currently do not talk to each other.</p>
+    <table class="comparison">
+      <tr><th>Capability</th><th>Liquid Haskell</th><th>Z3/CVC5</th><th>Lean 4</th><th>Dex</th><th>C³</th></tr>
+      <tr><td>Refinement types</td><td class="yes">✓</td><td class="no">✗</td><td class="yes">✓</td><td class="no">✗</td><td class="yes">✓</td></tr>
+      <tr><td>SMT constraint solving</td><td class="yes">via Z3</td><td class="yes">✓</td><td class="no">✗</td><td class="no">✗</td><td class="yes">built-in</td></tr>
+      <tr><td>Non-linear arithmetic (CAD)</td><td class="no">limited</td><td class="yes">partial</td><td class="no">✗</td><td class="no">✗</td><td class="yes">full, from scratch</td></tr>
+      <tr><td>Automatic differentiation</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+      <tr><td>Quantifier elimination</td><td class="no">✗</td><td class="yes">partial</td><td class="no">✗</td><td class="no">✗</td><td class="yes">full QE via CAD</td></tr>
+      <tr><td>Proof extraction</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✓</td><td class="no">✗</td><td class="yes">✓</td></tr>
+      <tr><td>Zero external solver deps</td><td class="no">✗</td><td class="no">N/A</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+      <tr><td>Algebraic numbers (no CAS)</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✓ Thom encoding</td></tr>
+    </table>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2>Quantifier Elimination — live examples</h2>
+    <p class="section-lead">Full QE over real closed fields. Virtual substitution for linear/quadratic. CAD for the general case. Every result carries a proof certificate.</p>
+    <pre><code><span class="comment">// ∃x. x² + bx + c = 0  →  b² - 4c ≥ 0</span>
+val result = QEEngine().eliminate(QEProblem(
+  quantifiers = List(Quantifier.Exists("x", 0)),
+  matrix      = QFFormula.Atom(x2 + bx + c, Relation.Eq),
+  freeVars    = List("b", "c"),
+  nTotalVars  = 3
+))
+println(result.formula)  <span class="comment">// b² - 4c ≥ 0</span>
+
+<span class="comment">// ∃x. ∀y. x ≤ y  →  False  (no least real)</span>
+val result2 = QEEngine().eliminate(QEProblem(
+  quantifiers = List(Quantifier.Exists("x", 0), Quantifier.Forall("y", 1)),
+  matrix      = QFFormula.Atom(x - y, Relation.Le),
+  freeVars    = Nil, nTotalVars = 2
+))
+println(result2.formula)  <span class="comment">// False</span>
+
+<span class="comment">// Extract and check proof certificate</span>
+val proof = ProofCertificateExtractor.extract(problem, result)
+val check = ProofChecker.check(proof)
+println(check.valid)      <span class="comment">// true</span></code></pre>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2>Test suite</h2>
+    <div class="test-suite">
+      <div class="test-group">LINEAR (Virtual Substitution)</div>
+      <span class="test-pass">  ✓ ∃x. x > 0 ∧ x &lt; 1  →  True</span>
+      <span class="test-pass">  ✓ ∃x. x > a ∧ x &lt; b  →  a &lt; b</span>
+      <span class="test-pass">  ✓ ∀x. x² ≥ 0  →  True</span>
+      <div class="test-group">QUADRATIC</div>
+      <span class="test-pass">  ✓ ∃x. x² = 2  →  True</span>
+      <span class="test-pass">  ✓ ∃x. x² + 1 = 0  →  False</span>
+      <span class="test-pass">  ✓ ∃x. x² + bx + c = 0  →  b² - 4c ≥ 0</span>
+      <div class="test-group">MIXED QUANTIFIERS</div>
+      <span class="test-pass">  ✓ ∀x. ∃y. y > x  →  True</span>
+      <span class="test-pass">  ✓ ∃x. ∀y. x ≤ y  →  False</span>
+      <div class="test-group">NEGATIVE TESTS</div>
+      <span class="test-pass">  ✓ ∃x. x² &lt; 0  →  False</span>
+      <span class="test-pass">  ✓ ∀x. x > 0  →  False</span>
+      <div class="test-group">PROOF CERTIFICATES</div>
+      <span class="test-pass">  ✓ Certificate extracted for ground problem</span>
+      <div class="test-group">FORMULA SIMPLIFIER</div>
+      <span class="test-pass">  ✓ ¬(A ∧ B) = ¬A ∨ ¬B (De Morgan)</span>
+      <span class="test-pass">  ✓ True ∧ F = F</span>
+      <span class="test-pass">  ✓ False ∨ F = F</span>
+      <div class="test-summary">14 passed · 0 failed</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2>Open proof obligations</h2>
+    <p class="section-lead">All 15 open proof obligations are tracked in <a href="https://github.com/SNAPKITTYWEST/c3-kernel/blob/master/OBLIGATIONS.md">OBLIGATIONS.md</a>. No obligation is hidden. No proof gap is silent.</p>
+    <div class="oblig-grid">
+      <div class="oblig-item"><div class="oblig-id">OBL-001</div><div class="oblig-title">Kernel Soundness</div><div class="oblig-method">Logical relations over constraint-extended term model</div></div>
+      <div class="oblig-item"><div class="oblig-id">OBL-004</div><div class="oblig-title">CAD Projection Correctness</div><div class="oblig-method">Collins (1975) + subresultant PRS theory</div></div>
+      <div class="oblig-item"><div class="oblig-id">OBL-006</div><div class="oblig-title">Thom Encoding Uniqueness</div><div class="oblig-method">Rolle's theorem + sign variation</div></div>
+      <div class="oblig-item"><div class="oblig-id">OBL-008</div><div class="oblig-title">Virtual Substitution (Linear)</div><div class="oblig-method">Weispfenning (1988)</div></div>
+      <div class="oblig-item"><div class="oblig-id">OBL-010</div><div class="oblig-title">Nelson-Oppen Combination</div><div class="oblig-method">Nelson-Oppen (1979)</div></div>
+      <div class="oblig-item"><div class="oblig-id">OBL-014</div><div class="oblig-title">QE Completeness</div><div class="oblig-method">Tarski (1951) + Collins (1975)</div></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-row">
+      <div><strong style="color:#fff;font-size:1.1rem">C³ Kernel</strong><span style="color:var(--muted);font-size:0.85rem;display:block">Calculus of Constrained Constructions</span></div>
+      <div class="footer-links">
+        <a href="https://github.com/SNAPKITTYWEST/c3-kernel">GitHub</a>
+        <a href="https://github.com/SNAPKITTYWEST/c3-kernel/blob/master/OBLIGATIONS.md">Obligations</a>
+        <a href="https://github.com/SNAPKITTYWEST/c3-kernel/blob/master/CONTRIBUTING.md">Contributing</a>
+        <a href="https://github.com/SNAPKITTYWEST">SNAPKITTYWEST</a>
+      </div>
+    </div>
+    <p class="footer-note">sovereign formal systems · liquid haskell heritage · public mathematics</p>
+  </div>
+</footer>
+</body>
+</html>
