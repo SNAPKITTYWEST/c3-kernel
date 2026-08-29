@@ -302,6 +302,25 @@ If you use C³ in research, cite as:
 
 ---
 
+## Companion: DSSS
+
+[**DSSS — Deterministic Sovereign Solving System**](https://github.com/SNAPKITTYWEST/dsss) is the SMT-LIB2 interface layer built on top of C³.
+
+Where C³ is the type theory and solver core, DSSS is the drop-in replacement for Z3 in the LiquidHaskell/liquid-fixpoint pipeline.
+
+| | C³ | DSSS |
+|---|---|---|
+| **Role** | Type theory + solver foundation | SMT-LIB2 interface + circuit DSL + ZK pipeline |
+| **Primary language** | Scala 3 | Haskell + Idris 2 + Futhark |
+| **Entry point** | `⟨t | C⟩` constraint terms | SMT-LIB2 query stream from LiquidHaskell |
+| **Key contribution** | CAD from scratch, CDCL(T), QE | Typed circuit DSL, ZK witness generation, SGMT policy |
+
+If you are coming from LiquidHaskell: start with DSSS (drop-in replacement), which uses C³ as its backend.
+
+If you are coming from type theory: start here.
+
+---
+
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md). In particular, read the section on proof obligations and the relationship to Liquid Haskell. We want Liquid Haskell contributors and users — your expertise in refinement type inference, predicate abstraction, and abstract interpretation is directly applicable.
@@ -312,4 +331,4 @@ See [CONTRIBUTING.md](CONTRIBUTING.md). In particular, read the section on proof
 
 [SNAPKITTYWEST](https://github.com/SNAPKITTYWEST) — sovereign stack, public interest mathematics.
 
-[License](LICENSE) · [Proof Obligations](OBLIGATIONS.md) · [Contributing](CONTRIBUTING.md) · [GitHub Pages](https://snapkittywest.github.io/c3-kernel/)
+[License](LICENSE) · [Proof Obligations](OBLIGATIONS.md) · [Contributing](CONTRIBUTING.md) · [GitHub Pages](https://snapkittywest.github.io/c3-kernel/) · [DSSS](https://github.com/SNAPKITTYWEST/dsss)
